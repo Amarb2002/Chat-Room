@@ -25,6 +25,8 @@ app.set('views', path.join(__dirname, 'views')); // Add this line to set the vie
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/socket.io', express.static(path.join(__dirname, 'node_modules', 'socket.io', 'client-dist')));
+
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
