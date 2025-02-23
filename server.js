@@ -8,8 +8,17 @@ const ytdl = require('@distube/ytdl-core');
 
 const app = express();
 
+const allowedOrigins = [process.env.VERCEL_URL, 'http://localhost:3000'];
+
 app.use(cors({
-    origin: process.env.VERCEL_URL
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: ["GET", "POST"]
 }));
 
 app.set('views', path.join(__dirname, 'views')); // Add this line to set the views directory
@@ -19,7 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: process.env.VERCEL_URL,
+        origin: allowedOrigins,
         methods: ["GET", "POST"]
     }
 });
