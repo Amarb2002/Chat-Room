@@ -92,11 +92,14 @@ app.get('/play/:videoId', async (req, res) => {
 });
 
 io.on('connection', (socket) => {
+    console.log('A user connected:', socket.id); // Add this line
+
     let currentRoom;
 
     socket.on('join-room', (room) => {
         currentRoom = room;
         socket.join(room);
+        console.log(`User ${socket.id} joined room ${room}`); // Add this line
         // Initialize room if it doesn't exist
         if (!rooms[room]) {
             rooms[room] = { users: [], messages: [], currentSong: null, isPlaying: false };
@@ -138,6 +141,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
+        console.log('A user disconnected:', socket.id); // Add this line
         if (currentRoom && rooms[currentRoom]) {
             rooms[currentRoom].users = rooms[currentRoom].users.filter(id => id !== socket.id);
             io.to(currentRoom).emit('update-users', rooms[currentRoom].users.length);
