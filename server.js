@@ -141,4 +141,4 @@ if (process.env.NODE_ENV !== 'production') {
     });
 }
 
-module.exports = server;
+module.exports = app;
