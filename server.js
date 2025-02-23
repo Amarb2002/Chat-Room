@@ -12,6 +12,7 @@ app.use(cors({
     origin: process.env.VERCEL_URL
 }));
 
+app.set('views', path.join(__dirname, 'views')); // Add this line to set the views directory
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -141,4 +142,5 @@ if (process.env.NODE_ENV !== 'production') {
     });
 }
 
+// module.exports = server;
 module.exports = app;
