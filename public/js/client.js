@@ -1,3 +1,18 @@
+const socket = io({
+    path: '/socket.io',
+    transports: ['websocket', 'polling'],
+    reconnectionAttempts: 5,
+    secure: true
+});
+
+socket.on('connect', () => {
+    console.log('Connected to server:', socket.id);
+});
+
+socket.on('disconnect', () => {
+    console.log('Disconnected from server');
+});
+
 // Handle music controls (loaded in music.html)
 function playSong(videoId) {
     socket.emit('play-song', { videoId });
