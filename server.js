@@ -23,7 +23,7 @@ app.use(cors({
 
 app.set('views', path.join(__dirname, 'views')); // Add this line to set the views directory
 app.set('view engine', 'ejs');
-app.use(express.static(path.join(__dirname, 'views')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/socket.io', express.static(path.join(__dirname, 'node_modules', 'socket.io', 'client-dist')));
 
@@ -31,9 +31,13 @@ const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
         origin: allowedOrigins,
-        methods: ["GET", "POST"]
-    }
+        methods: ["GET", "POST"],
+        credentials: true
+    },
+    transports: ['websocket', 'polling']
 });
+
+let rooms = {};
 
 app.get('/', (req, res) => {
     res.render('index');
@@ -90,11 +94,14 @@ app.get('/play/:videoId', async (req, res) => {
 });
 
 io.on('connection', (socket) => {
+    console.log('A user connected:', socket.id); // Add this line
+
     let currentRoom;
 
     socket.on('join-room', (room) => {
         currentRoom = room;
         socket.join(room);
+        console.log(`User ${socket.id} joined room ${room}`); // Add this line
         // Initialize room if it doesn't exist
         if (!rooms[room]) {
             rooms[room] = { users: [], messages: [], currentSong: null, isPlaying: false };
@@ -136,6 +143,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
+        console.log('A user disconnected:', socket.id); // Add this line
         if (currentRoom && rooms[currentRoom]) {
             rooms[currentRoom].users = rooms[currentRoom].users.filter(id => id !== socket.id);
             io.to(currentRoom).emit('update-users', rooms[currentRoom].users.length);
