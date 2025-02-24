@@ -114,6 +114,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('chat-message', (data) => {
+        console.log(`Message received in room ${currentRoom}:`, data); // Add this line
         if (currentRoom && rooms[currentRoom]) {
             rooms[currentRoom].messages.push(data);
             io.to(currentRoom).emit('chat-message', data);
