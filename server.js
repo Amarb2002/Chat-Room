@@ -23,7 +23,7 @@ app.use(cors({
 
 app.set('views', path.join(__dirname, 'views')); // Add this line to set the views directory
 app.set('view engine', 'ejs');
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'views')));
 
 app.use('/socket.io', express.static(path.join(__dirname, 'node_modules', 'socket.io', 'client-dist')));
 
