@@ -11,24 +11,5 @@
       "src": "/(.*)",
       "dest": "/server.js"
     }
-  ],
-  "headers": [
-    {
-      "source": "/socket.io/(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
-        {
-          "key": "Connection",
-          "value": "upgrade"
-        },
-        {
-          "key": "Upgrade",
-          "value": "websocket"
-        }
-      ]
-    }
   ]
 }
