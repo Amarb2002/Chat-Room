@@ -6,10 +6,10 @@
       "use": "@vercel/node"
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/(.*)",
-      "destination": "/server.js"
+      "src": "/(.*)",
+      "dest": "/server.js"
     }
   ],
   "headers": [
@@ -22,7 +22,11 @@
         },
         {
           "key": "Connection",
-          "value": "keep-alive"
+          "value": "upgrade"
+        },
+        {
+          "key": "Upgrade",
+          "value": "websocket"
         }
       ]
     }
