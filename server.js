@@ -153,6 +153,11 @@ io.on('connection', (socket) => {
     });
 });
 
+// Define a catch-all route to handle requests that don't match any other routes
+app.get('*', (req, res) => {
+    res.status(404).send('404 Not Found');
+});
+
 if (process.env.NODE_ENV !== 'production') {
     const PORT = process.env.PORT || 3000;
     server.listen(PORT, () => {
