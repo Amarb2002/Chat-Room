@@ -28,6 +28,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/socket.io', express.static(path.join(__dirname, 'node_modules', 'socket.io', 'client-dist')));
 
+app.get('/socket.io/socket.io.js', (req, res) => {
+    res.sendFile(path.join(__dirname, 'node_modules', 'socket.io', 'client-dist', 'socket.io.js'));
+});
+
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
